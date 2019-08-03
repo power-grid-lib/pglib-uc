@@ -1,0 +1,160 @@
+\documentclass{article}
+%
+\usepackage{fullpage}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\usepackage{IEEEtrantools}
+\usepackage{filecontents}
+
+
+\newcommand{\cT}{{\mathcal T}}
+\newcommand{\cS}{{\mathcal S}}
+\newcommand{\cG}{{\mathcal G}}
+\newcommand{\cL}{{\mathcal L}}
+\newcommand{\cW}{{\mathcal W}}
+\newcommand{\bbR}{{\mathbb R}}
+\newcommand{\uP}{\underline{P}}
+\newcommand{\oP}{\overline{P}}
+
+\newcommand\mydescriptionopt{
+	\IEEEsetlabelwidth{$g \in \cG_{\textit{off}}^0$]}
+	\IEEEusemathlabelsep
+}
+\begin{document}
+
+\section{Nomenclature}
+\subsection{Indices and Sets}
+\begin{IEEEdescription}[\mydescriptionopt] 
+	\item[$g \in \cG$] Set of thermal generators.
+	\item[$g \in \cG_{\textit{on}}^0$] Set of thermal generators which are initially committed (on).
+	\item[$g \in \cG_{\textit{off}}^0$] Set of thermal generators which are not initially committed (off).
+	\item[$w \in \cW$] Set of renewable generators.
+	\item[$t \in \cT$] Hourly time steps: $1, \ldots, T$, $T$ = {\tt time\_periods}
+	\item[$l \in \cL_g$] Piecewise production cost intervals for thermal generator $g$: $1, \ldots, L_g$.
+	\item[$s \in \cS_g$] Startup categories for thermal generator $g$, from hottest ($1$) to coldest ($S_g$): $1, \ldots, S_g$.
+\end{IEEEdescription}
+
+\subsection{System Parameters}
+\begin{IEEEdescription}[\mydescriptionopt]
+	\item[$D(t)$]    Load (demand) at time $t$ (MW), {\tt demand}.
+	\item[$R(t)$]    Spinning reserve at time $t$ (MW), {\tt reserves}.
+\end{IEEEdescription}
+
+\subsection{Thermal Generator Parameters}
+\begin{IEEEdescription}[\mydescriptionopt]
+	\item[$CS_g^s$]  Startup cost in category $s$ for generator $g$ (\$), {\tt startup['cost']}.
+	\item[$CP_g^l$]  Cost of operating at piecewise generation point $l$ for generator $g$ (MW), {\tt piecewise\_production['cost']}.
+	\item[$DT_g$]    Minimum down time for generator $g$ (h), {\tt time\_down\_minimum}.
+	\item[$DT^0_g$] Number of time periods the unit has been off prior to the first time period for generator $g$, {\tt time\_down\_t0}.
+	\item[$\oP_g$]   Maximum power output for generator $g$ (MW), {\tt power\_output\_maximum}.
+	\item[$\uP_g$]   Minimum power output for generator $g$ (MW), {\tt power\_output\_minimum}.
+	\item[$P_g^0$]   Power output for generator $g$ (MW) in the time period prior to t=1, {\tt power\_output\_t0}.
+	\item[$P_g^l$]   Power level for piecewise generation point $l$ for generator $g$ (MW); $P^1_g = \uP_g$ and $P^{L_g}_g = \oP_g$, {\tt piecewise\_production['mw']}.
+	\item[$RD_g$]    Ramp-down rate for generator $g$ (MW/h), {\tt ramp\_down\_limit}.
+	\item[$RU_g$]    Ramp-up rate for generator $g$ (MW/h), {\tt ramp\_up\_limit}.
+	\item[$SD_g$]    Shutdown capability for generator $g$ (MW), {\tt ramp\_shutdown\_limit}.
+	\item[$SU_g$]    Startup capability for generator $g$ (MW), {\tt ramp\_startup\_limit}
+	\item[$TS^s_g$] Time offline after which the startup category $s$ becomes active (h), {\tt startup['lag']}.
+	\item[$UT_g$]    Minimum up time for generator $g$ (h), {\tt time\_up\_minimum}.
+	\item[$UT^0_g$] Number of time periods the unit has been on prior to the first time period for generator $g$, {\tt time\_up\_t0}.
+	\item[$U_g^0$]  Initial on/off status for generator $g$, $U_g^0=1$ for $g \in \cG_{\textit{on}}^0$, $U_g^0=0$ for $g \in \cG_{\textit{off}}^0$,  {\tt unit\_on\_t0}.
+	\item[$U_g$] 	Must-run status for generator $g$, {\tt must\_run}.
+\end{IEEEdescription}
+
+\subsection{Renewable Generator Parameters}
+\begin{IEEEdescription}[\mydescriptionopt]
+	\item[$\oP_w(t)$] Maximum renewable generation available from renewable generator $w$ at time $t$ (MW), {\tt power\_output\_maximum}.
+	\item[$\uP_w(t)$] Minimum renewable generation available from renewable generator $w$ at time $t$ (MW), {\tt power\_output\_minimum}.
+\end{IEEEdescription}
+
+
+\subsection{Variables}
+\begin{IEEEdescription}[\mydescriptionopt]
+	\item[$c_g(t)$]    Cost of power produced above minimum for thermal generator $g$ at time $t$ (MW), $\in \bbR$.
+	\item[$p_g(t)$]    Power above minimum for thermal generator $g$ at time $t$ (MW), $\geq 0$.
+	\item[$p_w(t)$]  Renewable generation used from renewable generator $w$ at time $t$ (MW), $\geq 0$.
+	\item[$r_g(t)$]    Spinning reserves provided by thermal generator $g$ at time $t$ (MW), $\geq 0$.
+	\item[$u_g(t)$]    Commitment status of thermal generator $g$ at time $t$, $\in \{0,1\}$. 
+	\item[$v_g(t)$]    Startup status of thermal generator $g$ at time $t$, $\in \{0,1\}$. 
+	\item[$w_g(t)$]    Shutdown status of thermal generator $g$ at time $t$, $\in \{0,1\}$. \
+	\item[$\delta^s_g(t)$] Startup in category $s$ for thermal generator $g$ at time $t$, $\in \{0,1\}$.
+	\item[$\lambda_g^l(t)$]  Fraction of power from piecewise generation point $l$ for generator $g$ at time $t$ (MW), $\in [0,1]$.
+\
+\end{IEEEdescription}
+
+\section{Model Description}
+Below we describe the unit commitment model given by~\cite{morales2013tight}, with the piecewise production cost description from~\cite{sridhar2013locally}.
+The unit commitment problem can then be formulated as:
+{\allowdisplaybreaks
+		\begin{align}
+		& \text{min } \sum_{g \in \cG} \sum_{t \in \cT} \left( c_g(t) + CP_g^1 \, u_g(t) + \sum_{s = 1}^{S_g} \left( CS^s_g \delta^s(t) \right) \right) \label{eq:obj} %\tag{UC} %\\
+		%\text{subject to }  & &  \nonumber
+		\end{align}
+		subject to:
+		\begin{align}
+		& \sum_{g \in \cG} \left( p_g(t) + \uP_g u_g(t) \right) + \sum_{w\in\cW} p_w(t) = D(t) & \hspace{5cm} \forall t \in \cT \label{eq:UCDemand} \\
+		& \sum_{g \in \cG} r_g(t) \geq R(t) &  \forall t \in \cT \label{eq:UCReserves}
+		\end{align}
+		\begin{align}
+		& \sum_{t=1}^{\min\{UT_g - UT_g^0, T\}} (u_g(t) - 1) = 0 & \hspace{3cm} \forall g \in \cG_{\textit{on}}^0 \label{eq:initialUpRequirement} \\
+		& \sum_{t=1}^{\min\{DT_g - DT_g^0, T\}} u_g(t) = 0 & \forall g \in \cG_{\textit{off}}^0 \label{eq:initialDownRequirement} \\
+		& u_g(1) - U_g^0 = v_g(1) - w_g(1) & \forall g \in \cG \label{eq:LogicalInitial} \\	
+		& \sum_{s=1}^{S_g-1} \sum_{t=\max\{1, TS^{s+1}_g - DT^0_g + 1\}}^{TS^{s+1}_g -1} \delta^s_g(t) = 0 & \forall g \in \cG \label{eq:STIInit}\\
+		& p_g(1) + r_g(1) - U_g^0(P_g^0-\uP_g) \leq RU_g & \forall g \in \cG \label{eq:RampUpInit} \\
+		& U_g^0(P_g^0-\uP_g) - p_g(1) \leq RD_g & \forall g \in \cG \label{eq:RampDownInit} \\
+		& U_g^0(P_g^0-\uP_g) \leq (\oP_g - \uP_g) U_g^0 - \max\{(\oP_g - SD_g),0\} w_g(1) & \forall g \in \cG \label{eq:MaxOutput2Init}
+		\end{align}
+		\begin{align}
+		& u_g(t) \geq U_g & \hspace{1cm} \forall t \in \cT, \, \forall g \in \cG \label{eq:MustRun} \\
+		& u_g(t) - u_g(t-1) = v_g(t) - w_g(t) & \forall t \in \cT\setminus\{1\}, \, \forall g \in \cG \label{eq:Logical} \\
+		& \sum_{i= t-UT_g + 1}^t v_g(i) \leq u_g(t) & \forall t \in \{UT_g, \ldots, T\}, \, \forall g \in \cG \label{eq:Startup} \\
+		& \sum_{i= t-DT_g + 1}^t w_g(i) \leq 1 - u_g(t) & \forall t \in \{DT_g, \ldots, T\}, \, \forall g \in \cG \label{eq:Shutdown} \\
+		& \delta^s_g(t) \leq \sum_{i = TS^s_g}^{TS^{s+1}_g-1} w_g(t-i) & \forall t \in \{TS^{s+1}_g,\ldots,T\},\,\forall s \in \cS_g\!\setminus\!\{S_g\},\,  \forall g \in \cG \label{eq:STISelect} \\
+		& v_g(t) = \sum_{s = 1}^{S_g} \delta^s_g(t) & \forall t \in \cT,\, \forall g \in \cG \label{eq:STILink}
+		\end{align}
+		\begin{align}
+		& p_g(t) + r_g(t) \leq (\oP_g - \uP_g) u_g(t) - \max\{(\oP_g - SU_g),0\} v_g(t) & \forall t \in \cT, \, \forall g \in \cG \label{eq:MaxOutput1} \\
+		& p_g(t) + r_g(t) \leq (\oP_g - \uP_g) u_g(t) - \max\{(\oP_g - SD_g),0\} w_g(t+1) & \forall t \in \cT\setminus \{T\}, \, \forall g \in \cG \label{eq:MaxOutput2} \\
+		& p_g(t) + r_g(t) - p_g(t-1) \leq RU_g & \forall t \in \cT\setminus\{1\}, \, \forall g \in \cG \label{eq:RampUp} \\
+		& p_g(t-1) - p_g(t) \leq RD_g & \forall t \in \cT\setminus\{1\}, \, \forall g \in \cG \label{eq:RampDown}
+		\end{align}
+		\begin{align}
+		& p_g(t) = \sum_{l \in \cL_g} (P_g^l - P_g^1) \lambda_g^l(t) &\hspace{5cm} \forall t \in \cT, \, \forall g \in \cG \label{eq:PiecewiseParts} \\
+		& c_g(t) = \sum_{l \in \cL_g} (CP_g^l - CP_g^1) \lambda_g^l(t) & \forall t \in \cT, \, \forall g \in \cG \label{eq:PiecewisePartsCost} \\
+		& u_g(t) = \sum_{l \in \cL_g} \lambda_g^l(t) & \forall t \in \cT, \forall g \in \cG \label{eq:PiecewiseLimits}
+		\end{align}
+		\begin{align}
+		& \uP_w(t) \leq p_w(t) \leq \oP_w(t) &\hspace{6cm} \forall t \in \cT, \, \forall w \in \cW \label{eq:WindLimit}
+		\end{align}
+}%
+Note that in constraints~\eqref{eq:initialUpRequirement}, \eqref{eq:initialDownRequirement}, and \eqref{eq:STIInit}, we use the convention that empty sums are $0$.
+
+%% add the bibtex
+\begin{filecontents*}{MODEL.bib}
+@article{morales2013tight,
+	title={Tight and compact {MILP} formulation for the thermal unit commitment problem},
+	author={Morales-Espa{\~n}a, G. and Latorre, J. M. and Ramos, A.},
+	journal={IEEE Transactions on Power Systems},
+	volume={28},
+	number={4},
+	pages={4897--4908},
+	year={2013},
+	publisher={IEEE}
+}
+@article{sridhar2013locally,
+	title={Locally ideal formulations for piecewise linear functions with indicator variables},
+	author={Sridhar, Srikrishna and Linderoth, Jeff and Luedtke, James},
+	journal={Operations Research Letters},
+	volume={41},
+	number={6},
+	pages={627--632},
+	year={2013},
+	publisher={Elsevier}
+}
+\end{filecontents*}
+
+\bibliographystyle{acm}
+\bibliography{MODEL}	
+
+\end{document}
