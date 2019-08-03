@@ -100,7 +100,7 @@ The unit commitment problem can then be formulated as:
 		& \sum_{t=1}^{\min\{UT_g - UT_g^0, T\}} (u_g(t) - 1) = 0 & \hspace{3cm} \forall g \in \cG_{\textit{on}}^0 \label{eq:initialUpRequirement} \\
 		& \sum_{t=1}^{\min\{DT_g - DT_g^0, T\}} u_g(t) = 0 & \forall g \in \cG_{\textit{off}}^0 \label{eq:initialDownRequirement} \\
 		& u_g(1) - U_g^0 = v_g(1) - w_g(1) & \forall g \in \cG \label{eq:LogicalInitial} \\	
-		& \sum_{s=1}^{S_g-1} \sum_{t=\max\{1, TS^{s+1}_g - DT^0_g + 1\}}^{TS^{s+1}_g -1} \delta^s_g(t) = 0 & \forall g \in \cG \label{eq:STIInit}\\
+		& \sum_{s=1}^{S_g-1} \sum_{t=\max\{1, TS^{s+1}_g - DT^0_g + 1\}}^{\min\{TS^{s+1}_g -1,T\}} \delta^s_g(t) = 0 & \forall g \in \cG \label{eq:STIInit}\\
 		& p_g(1) + r_g(1) - U_g^0(P_g^0-\uP_g) \leq RU_g & \forall g \in \cG \label{eq:RampUpInit} \\
 		& U_g^0(P_g^0-\uP_g) - p_g(1) \leq RD_g & \forall g \in \cG \label{eq:RampDownInit} \\
 		& U_g^0(P_g^0-\uP_g) \leq (\oP_g - \uP_g) U_g^0 - \max\{(\oP_g - SD_g),0\} w_g(1) & \forall g \in \cG \label{eq:MaxOutput2Init}
@@ -108,8 +108,8 @@ The unit commitment problem can then be formulated as:
 		\begin{align}
 		& u_g(t) \geq U_g & \hspace{1cm} \forall t \in \cT, \, \forall g \in \cG \label{eq:MustRun} \\
 		& u_g(t) - u_g(t-1) = v_g(t) - w_g(t) & \forall t \in \cT\setminus\{1\}, \, \forall g \in \cG \label{eq:Logical} \\
-		& \sum_{i= t-UT_g + 1}^t v_g(i) \leq u_g(t) & \forall t \in \{UT_g, \ldots, T\}, \, \forall g \in \cG \label{eq:Startup} \\
-		& \sum_{i= t-DT_g + 1}^t w_g(i) \leq 1 - u_g(t) & \forall t \in \{DT_g, \ldots, T\}, \, \forall g \in \cG \label{eq:Shutdown} \\
+		& \sum_{i= t-\min\{UT_g,T\} + 1}^t v_g(i) \leq u_g(t) & \forall t \in \{\min\{UT_g,T\} \ldots, T\}, \, \forall g \in \cG \label{eq:Startup} \\
+		& \sum_{i= t-\min\{DT_g.T\} + 1}^t w_g(i) \leq 1 - u_g(t) & \forall t \in \{\min\{DT_g, T\}, \ldots, T\}, \, \forall g \in \cG \label{eq:Shutdown} \\
 		& \delta^s_g(t) \leq \sum_{i = TS^s_g}^{TS^{s+1}_g-1} w_g(t-i) & \forall t \in \{TS^{s+1}_g,\ldots,T\},\,\forall s \in \cS_g\!\setminus\!\{S_g\},\,  \forall g \in \cG \label{eq:STISelect} \\
 		& v_g(t) = \sum_{s = 1}^{S_g} \delta^s_g(t) & \forall t \in \cT,\, \forall g \in \cG \label{eq:STILink}
 		\end{align}
