@@ -24,7 +24,7 @@ These cases are useful for benchmarking solution methods for a variant of the un
 This is divided into three sets of generators, each with varying load and reserve profiles. Please see the reference documents for more detail on the sources and motivations for these test cases.
 
 ### /ca/*.json
-Generator and load data curated from publicly available data from the California ISO. There are four different load profiles by date, and varying reserve requirements as a percentage of load: 0%, 1%, 3%, and 5%. When using this data, please cite [1].
+Generator and load data curated from publicly available data from the California ISO. There are four different load profiles by date, and varying reserve requirements as a percentage of load: 0%, 1%, 3%, and 5%. A fifth load profile (Scenario400) includes a hypothetical 40% wind generation supply. When using this data, please cite [1].
 
 ### /ferc/*.json
 Generator data based on the publicly available unit commitment test instance from the Federal Energy Regulatory Commission. Load, reserves, and wind data is curated from publicly available data from PJM. The 'lw' moniker denotes a wind profile scaled to be 2% of annual load; the 'hw' denotes a wind profile scaled to be 30% of annual load. When using this data, please cite [1],[2].
