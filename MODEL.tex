@@ -109,7 +109,7 @@ The unit commitment problem can then be formulated as:
 		& u_g(t) \geq U_g & \hspace{1cm} \forall t \in \cT, \, \forall g \in \cG \label{eq:MustRun} \\
 		& u_g(t) - u_g(t-1) = v_g(t) - w_g(t) & \forall t \in \cT\setminus\{1\}, \, \forall g \in \cG \label{eq:Logical} \\
 		& \sum_{i= t-\min\{UT_g,T\} + 1}^t v_g(i) \leq u_g(t) & \forall t \in \{\min\{UT_g,T\} \ldots, T\}, \, \forall g \in \cG \label{eq:Startup} \\
-		& \sum_{i= t-\min\{DT_g.T\} + 1}^t w_g(i) \leq 1 - u_g(t) & \forall t \in \{\min\{DT_g, T\}, \ldots, T\}, \, \forall g \in \cG \label{eq:Shutdown} \\
+		& \sum_{i= t-\min\{DT_g,T\} + 1}^t w_g(i) \leq 1 - u_g(t) & \forall t \in \{\min\{DT_g, T\}, \ldots, T\}, \, \forall g \in \cG \label{eq:Shutdown} \\
 		& \delta^s_g(t) \leq \sum_{i = TS^s_g}^{TS^{s+1}_g-1} w_g(t-i) & \forall t \in \{TS^{s+1}_g,\ldots,T\},\,\forall s \in \cS_g\!\setminus\!\{S_g\},\,  \forall g \in \cG \label{eq:STISelect} \\
 		& v_g(t) = \sum_{s = 1}^{S_g} \delta^s_g(t) & \forall t \in \cT,\, \forall g \in \cG \label{eq:STILink}
 		\end{align}
