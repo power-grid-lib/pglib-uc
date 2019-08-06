@@ -23,7 +23,7 @@ These cases are useful for benchmarking solution methods for a variant of the un
 
 This is divided into three sets of generators, each with varying load and reserve profiles. Please see the reference documents for more detail on the sources and motivations for these test cases.
 
-### /cal/*.json
+### /ca/*.json
 Generator and load data curated from publicly available data from the California ISO. There are four different load profiles by date, and varying reserve requirements as a percentage of load: 0%, 1%, 3%, and 5%. When using this data, please cite [1].
 
 ### /ferc/*.json
@@ -35,7 +35,7 @@ Generator, load, and reserve data is curated from the publicly available [RTS-GM
 #### References
 [1] Knueven, Bernard, James Ostrowski, and Jean-Paul Watson. "On mixed integer programming formulations for the unit commitment problem." Pre-print available at [http://www.optimization-online.org/DB_HTML/2018/11/6930.pdf](http://www.optimization-online.org/DB_HTML/2018/11/6930.pdf) (2018).
 
-[2] Krall, Eric, Michael Higgins, and Richard P. O’Neill. "RTO unit commitment test system." Federal Energy Regulatory Commission (2012).
+[2] Krall, Eric, Michael Higgins, and Richard P. O’Neill. "RTO unit commitment test system." Federal Energy Regulatory Commission. Available: [http://ferc.gov/legal/staff-reports/rto-COMMITMENT-TEST.pdf](http://ferc.gov/legal/staff-reports/rto-COMMITMENT-TEST.pdf) (2012).
 
 [3] Barrows, Clayton, Aaron Bloom, Ali Ehlen, Jussi Ikaheimo, Jennie Jorgenson, Dheepak Krishnamurthy, Jessica Lau et al. "The IEEE Reliability Test System: A Proposed 2019 Update." IEEE Transactions on Power Systems (2019).
 
