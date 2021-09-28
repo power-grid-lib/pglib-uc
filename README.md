@@ -33,11 +33,11 @@ Generator data based on the publicly available unit commitment test instance fro
 Generator, load, and reserve data is curated from the publicly available [RTS-GMLC test system](https://github.com/GridMod/RTS-GMLC). Hourly generator ramp-rates are divided by a factor of three to ensure all the technical features listed above are captured at an hourly time scale. When using this data, please cite [3].
 
 #### References
-[1] Knueven, Bernard, James Ostrowski, and Jean-Paul Watson. "On mixed integer programming formulations for the unit commitment problem." Pre-print available at [http://www.optimization-online.org/DB_HTML/2018/11/6930.pdf](http://www.optimization-online.org/DB_HTML/2018/11/6930.pdf) (2018).
+[1] Knueven, Bernard, James Ostrowski, and Jean-Paul Watson. ["On mixed integer programming formulations for the unit commitment problem."](http://www.optimization-online.org/DB_FILE/2018/11/6930.pdf) (2018).
 
-[2] Krall, Eric, Michael Higgins, and Richard P. O’Neill. "RTO unit commitment test system." Federal Energy Regulatory Commission. Available: [http://ferc.gov/legal/staff-reports/rto-COMMITMENT-TEST.pdf](http://ferc.gov/legal/staff-reports/rto-COMMITMENT-TEST.pdf) (2012).
+[2] Krall, Eric, Michael Higgins, and Richard P. O’Neill. ["RTO unit commitment test system."](https://www.ferc.gov/industries-data/electric/power-sales-and-markets/increasing-efficiency-through-improved-software-1) Federal Energy Regulatory Commission (2012).
 
-[3] Barrows, Clayton, Aaron Bloom, Ali Ehlen, Jussi Ikaheimo, Jennie Jorgenson, Dheepak Krishnamurthy, Jessica Lau et al. "The IEEE Reliability Test System: A Proposed 2019 Update." IEEE Transactions on Power Systems (2019).
+[3] Barrows, Clayton, Aaron Bloom, Ali Ehlen, Jussi Ikaheimo, Jennie Jorgenson, Dheepak Krishnamurthy, Jessica Lau et al. ["The IEEE Reliability Test System: A Proposed 2019 Update."](https://ieeexplore.ieee.org/document/8753693) IEEE Transactions on Power Systems (2019).
 
 
 ## Contributions
