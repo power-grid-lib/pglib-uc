@@ -3,8 +3,9 @@ import json
 import sys
 
 ## Grab instance file from first command line argument
-data_file = sys.argv[1]
-
+print(sys.argv)
+# data_file = sys.argv[0]
+data_file='C:\\Users\\hshengren\\Documents\\GitHub\\pglib-uc\\ca\\2014-09-01_reserves_0.json'
 print('loading data')
 data = json.load(open(data_file, 'r'))
 
